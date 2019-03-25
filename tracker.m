@@ -45,7 +45,31 @@ function [positions, time] = tracker(video_path, img_files, pos, target_sz, ...
             im_old = im;
         end
 		
-        pos
+        time = time + toc;
+        positions(frame,:) = pos;
+        
+        if show_visualization == 1
+            rect_position = [pos([2,1]) - target_sz([2,1])/2, target_sz([2,1])];
+            if frame == 1,  %first frame, create GUI
+                figure('Name',['Tracker - ' video_path]);
+                im_handle = imshow(uint8(im), 'Border','tight', 'InitialMag', 100 + 100 * (length(im) < 500));
+                rect_handle = rectangle('Position',rect_position, 'EdgeColor','g');
+                text_handle = text(10, 10, int2str(frame));
+                set(text_handle, 'color', [0 1 1]);
+            else
+                try  %subsequent frames, update GUI
+                    set(im_handle, 'CData', im)
+                    set(rect_handle, 'Position', rect_position)
+                    set(text_handle, 'string', int2str(frame));
+                catch
+                    return
+                end
+            end
+
+            drawnow
+    %         pause
+        end
+        
     end
 end
 
