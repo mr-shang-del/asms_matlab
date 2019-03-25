@@ -4,9 +4,9 @@ This is a matlab implementation of ASMS algorithm, according to "Robust scale-ad
 
 Results on OTB-2015
 
-![precision_plot](.\graphics\precision_plot.png)
+![precision_plot](./graphics/precision_plot.png)
 
-![success_plot](.\graphics\success_plot.png)
+![success_plot](./graphics/success_plot.png)
 
 ### Reference
 
