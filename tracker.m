@@ -1,10 +1,11 @@
-function [positions, time] = tracker(video_path, img_files, pos, target_sz, ...
+function [positions, rects, time] = tracker(video_path, img_files, pos, target_sz, ...
         show_visualization)
     bound1 = 0.05;
     bound2 = 0.1;
     target_sz0 = target_sz;
 
     time = 0;  %to calculate FPS
+    rects = zeros(numel(img_files), 4);
 	positions = zeros(numel(img_files), 2);  %to calculate precision1
 
 	for frame = 1:numel(img_files),
@@ -46,10 +47,11 @@ function [positions, time] = tracker(video_path, img_files, pos, target_sz, ...
         end
 		
         time = time + toc;
+        rects(frame,:) = [pos([2,1]) - target_sz([2,1])/2, target_sz([2,1])];
         positions(frame,:) = pos;
         
         if show_visualization == 1
-            rect_position = [pos([2,1]) - target_sz([2,1])/2, target_sz([2,1])];
+            rect_position = rects(frame,:);
             if frame == 1,  %first frame, create GUI
                 figure('Name',['Tracker - ' video_path]);
                 im_handle = imshow(uint8(im), 'Border','tight', 'InitialMag', 100 + 100 * (length(im) < 500));

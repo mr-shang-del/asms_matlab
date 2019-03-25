@@ -14,7 +14,7 @@ function [precision, fps] = run_tracker(video, show_visualization)
     [img_files, pos, target_sz, ground_truth, video_path] = load_video_info(base_path, video);
 
 	%call tracker function with all the relevant parameters
-	[positions, time] = tracker(video_path, img_files, pos, target_sz, show_visualization);
+	[positions, rects, time] = tracker(video_path, img_files, pos, target_sz, show_visualization);
 			
 	%calculate and show precision plot, as well as frames-per-secon
     precisions = precision_plot(positions, ground_truth, video, 1);
