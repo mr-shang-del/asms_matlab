@@ -5,10 +5,10 @@ function [pos_new, scale] = my_mean_shift(im, pos, target_sz, q_hist, b_hist ,wA
         candidate_sz = floor(target_sz+2*border);
         kernel = kernel_Epanechnikov(candidate_sz);
         kernel_deriv = kernel_Epanechnikov_deriv(candidate_sz);
-        [y_n, x_n] = ndgrid((1:candidate_sz(1)) - floor(candidate_sz(1)/2), (1:candidate_sz(2)) - floor(candidate_sz(2)/2));
-        y_n = y_n / floor(candidate_sz(1)/2);
-        x_n = x_n / floor(candidate_sz(2)/2);
-        dist = y_n.^2 + x_n.^2 ;
+        [y_n0, x_n0] = ndgrid((1:candidate_sz(1)) - floor(candidate_sz(1)/2), (1:candidate_sz(2)) - floor(candidate_sz(2)/2));
+        y_n = y_n0 / (target_sz(1)/2);
+        x_n = x_n0 / (target_sz(2)/2);
+        dist = sqrt(y_n.^2 + x_n.^2) ;
         
         target_patch = crop_patch(im, pos, candidate_sz);
         y1_hist = color_histogram(target_patch, 1);
@@ -25,8 +25,8 @@ function [pos_new, scale] = my_mean_shift(im, pos, target_sz, q_hist, b_hist ,wA
         Sbg = sum(sum(wy1(find(wqi<wbi))));
         Sfg = sum(sum(wq));
         m0 = sum(sum(wg));
-        m1x = sum(sum(x_n .* wg));
-        m1y = sum(sum(y_n .* wg));
+        m1x = sum(sum(x_n0 .* wg));
+        m1y = sum(sum(y_n0 .* wg));
         
         pos_tmp = pos + [m1y/m0, m1x/m0];
 

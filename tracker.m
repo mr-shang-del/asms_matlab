@@ -42,7 +42,8 @@ function [positions, rects, time] = tracker(video_path, img_files, pos, target_s
             wbi = sqrt(b_hist ./ q_hist);
             Sbg = sum(q_hist(find(wbi>1)));
             Sfg = sum(q_hist);
-            wAvgBg = max(0.1, min(Sfg/Sbg, 0.5));
+            wAvgBg = 0.5;
+            %wAvgBg = max(0.1, min(Sfg/Sbg, 0.5));
             im_old = im;
         end
 		
@@ -55,7 +56,7 @@ function [positions, rects, time] = tracker(video_path, img_files, pos, target_s
             if frame == 1,  %first frame, create GUI
                 figure('Name',['Tracker - ' video_path]);
                 im_handle = imshow(uint8(im), 'Border','tight', 'InitialMag', 100 + 100 * (length(im) < 500));
-                rect_handle = rectangle('Position',rect_position, 'EdgeColor','g');
+                rect_handle = rectangle('Position',rect_position, 'EdgeColor','g', 'LineWidth', 3);
                 text_handle = text(10, 10, int2str(frame));
                 set(text_handle, 'color', [0 1 1]);
             else
